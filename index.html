@@ -15,10 +15,26 @@
 				Thickness<input type="range" min="5" max="30" value="10" oninput="adjustWidth(this.value)" onclick='resetWidth()' id='widthSlider'>
 			</span>
 			<span>
-				Size<input type="range" min="20" max="150" value="100" oninput="adjustLength(this.value)" onclick='resetLength()' id='lengthSlider'>
+				Size<input type="range" min="20" max="125" value="100" oninput="adjustLength(this.value)" onclick='resetLength()' id='lengthSlider'>
+			</span>
+		</div>
+		<div>
+			<span>
+				Branches<input type="range" min="0" max="11" value="4" oninput="adjustBranches(this.value)" onclick='resetBranches()' id='branchSlider'>
 			</span>
 			<span>
-				Branches<input type="range" min="2" max="11" value="3" oninput="adjustBranches(this.value)" onclick='resetBranches()' id='branchSlider'>
+				Curve<input type="range" min="-0.4" max="0.7" step="0.05" value="0" oninput="adjustCurve(this.value)" onclick='resetCurve()' id='curveSlider'>
+			</span>
+		</div>
+		<div>
+			<span>
+				<button onclick='resetColor()'>Color Reset</button>
+			</span>
+			<span>
+				<button onclick='colorOnOff()'>Color On/Off</button>
+			</span>
+			<span>
+				<button onclick='invert()'>Invert Background</button>
 			</span>
 		</div>
 		<div style='font-size: 10px;'>(ctrl + click to reset value)</div>
