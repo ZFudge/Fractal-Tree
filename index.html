@@ -5,8 +5,24 @@
 	<title>Fractal Tree</title>
 </head>
 <body>
-	<canvas id='canv' height='500px' width='750px'></canvas>
-	<input type="range" min="-180" max="180" value="45" oninput="regrowth(this.value)" id="slider"/>
+	<div style='text-align:center;'>
+		<canvas id='canv' height='600px' width='750px'></canvas>
+		<div>
+			<span>
+				Angle<input type="range" step="0.5" min="-315" max="315" value="45" oninput="adjustAngle(this.value)" onclick='resetAngle()' id='angleSlider'>
+			</span>
+			<span>
+				Thickness<input type="range" min="5" max="30" value="10" oninput="adjustWidth(this.value)" onclick='resetWidth()' id='widthSlider'>
+			</span>
+			<span>
+				Size<input type="range" min="20" max="150" value="100" oninput="adjustLength(this.value)" onclick='resetLength()' id='lengthSlider'>
+			</span>
+			<span>
+				Branches<input type="range" min="2" max="11" value="3" oninput="adjustBranches(this.value)" onclick='resetBranches()' id='branchSlider'>
+			</span>
+		</div>
+		<div style='font-size: 10px;'>(ctrl + click to reset value)</div>
+	</div>
 	<script src='fractalTree.js'></script>
 </body>
 </html>
