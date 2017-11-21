@@ -3,6 +3,7 @@ const tree = {
   length: 100,
   width: 10,
   angle: 45,
+  angleOffset: 1,
   branches: 4,
   curve: 0,
   fruit: false,
@@ -10,7 +11,7 @@ const tree = {
   inverted: false,
   slow: false,
   growthUnits: 10,
-  colors: ['#3B0F00','#541500','#751D00','#8F2501',  '#2BAD00','#00DE1E',  '#6000DE','#AF02E8',   '#E80288','#E80253','#E8022C'],
+  colors: ['#3B0F00','#541500','#751D00','#8F2501',  '#2BAD00','#00DE1E',  '#6000DE','#AF02E8',   '#E80288','#E80253','#E8022C', '#A30000'],
   //colors: ['#F0F','#FA0','#0F0','#0FF', '#0004FF','#8400FF'],
   colorStack: [],
   returnToDefault: false
@@ -36,7 +37,7 @@ async function grow(growths, x, y, len, w, a) {
       (tree.seed) ? context.lineTo(0, -len) : context.quadraticCurveTo(tree.curve * a * len / 50, half, x, -len); //causes initial elongation
       context.stroke();
     }
-    console.log('last thing');
+    //console.log('last thing');
     if (tree.seed) tree.seed = false;
     //setTimeout( function() {    }, 3000)
     context.save();
@@ -46,11 +47,11 @@ async function grow(growths, x, y, len, w, a) {
     context.restore();
     context.save();
     
-    grow(growths + 1, 0, -len, len * 0.8, w * 0.8, -a);
+    grow(growths + 1, 0, -len, len * 0.8, w * 0.8, -a / tree.angleOffset);
     
     context.restore();
   } else if (tree.fruit) {
-    context.fillStyle = tree.colors[Math.floor(Math.random() * tree.colors.length)];
+    (tree.colorful) ? context.fillStyle = tree.colors[Math.floor(growths)] : (tree.inverted) ? context.fillStyle = 'white' : context.fillStyle = 'black';
     context.beginPath();
     context.arc(0,0, w * 2, 0,2 * Math.PI);
     context.fill();
@@ -90,6 +91,19 @@ function resetAngle() {
   if (tree.returnToDefault) {
     tree.angle = 45;
     angleSlide.value = 45;
+  }
+  regrowth();
+}
+
+function adjustAngleOffset(newAngOff) {
+  tree.angleOffset = parseFloat(newAngOff);
+  regrowth();
+}
+const angleOffsetSlide = document.getElementById('angleOffsetSlider');
+function resetAngleOffset() {
+  if (tree.returnToDefault) {
+    tree.angleOffset = 1;
+    angleOffsetSlide.value = 1;
   }
   regrowth();
 }

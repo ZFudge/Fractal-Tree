@@ -24,24 +24,21 @@
 				Branches<input type="range" min="0" max="11" value="4" oninput="adjustBranches(this.value)" onclick='resetBranches()' id='branchSlider'>
 			</span>
 			<span>
+				AngleOffset<input type="range" min="0" max="4" step="0.1" value="1" oninput="adjustAngleOffset(this.value)" onclick='resetAngleOffset()' id='angleOffsetSlider'>
+			</span>
+			<span>
 				Curve<input type="range" min="-0.4" max="0.7" step="0.05" value="0" oninput="adjustCurve(this.value)" onclick='resetCurve()' id='curveSlider'>
 			</span>
 		</div>
+		<div style='font-size: 10px;'>(ctrl + click to reset range)</div>
 		<div>
-			<span>
-				<button onclick='resetColor()'>Color Reset</button>
-			</span>
 			<span>
 				<button onclick='colorOnOff()'>Color On/Off</button>
 			</span>
 			<span>
 				<button onclick='invert()'>Invert Background</button>
 			</span>
-			<span>
-				<button onclick='slowGrow()'>Slow Grow</button>
-			</span>
 		</div>
-		<div style='font-size: 10px;'>(ctrl + click to reset value)</div>
 	</div>
 	<script src='fractalTree.js'></script>
 </body>
