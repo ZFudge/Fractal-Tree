@@ -7,6 +7,7 @@ const tree = {
   branches: 4,
   curve: 0,
   fruit: false,
+  fruitSwitch: function() {this.fruit = !this.fruit; regrowth()},
   colorful: true,
   inverted: false,
   slow: false,
@@ -29,19 +30,18 @@ async function grow(growths, x, y, len, w, a) {
     if (!tree.seed) context.rotate(a * Math.PI / 180);
     context.beginPath();
     context.moveTo(0, 0);
-    const bend = Math.random();
-    //if (Math.random() < 0) bend -= bend * 4;
+    //  console.log('growths');
     if (tree.slow) {
-      await sleep(slowReach, x, y, y-len); // (tree.seed) ? slowReach(0,canvas.height-len) : 
+      //await sleep(slowReach, x, y, y-len); // (tree.seed) ? slowReach(0,canvas.height-len) : 
+      await sleep(draw, x, half, len, a); // (tree.seed) ? slowReach(0,canvas.height-len) : 
     } else {
       (tree.seed) ? context.lineTo(0, -len) : context.quadraticCurveTo(tree.curve * a * len / 50, half, x, -len); //causes initial elongation
       context.stroke();
     }
-    //console.log('last thing');
     if (tree.seed) tree.seed = false;
-    //setTimeout( function() {    }, 3000)
     context.save();
     
+    //  console.log('last thing');
     grow(growths + 1, 0, -len, len * 0.8, w * 0.8, a);
 
     context.restore();
@@ -58,9 +58,14 @@ async function grow(growths, x, y, len, w, a) {
   }
 }
 
-async function sleep(fn, x, y, d) {
-  await timeout(500);
-  return fn(x, y, d);
+async function draw(x, half, len, a) {
+  (tree.seed) ? context.lineTo(0, -len) : context.quadraticCurveTo(tree.curve * a * len / 50, half, x, -len); //causes initial elongation
+  context.stroke();
+}
+
+async function sleep(fn, x, y, d, a) {
+  await timeout(1000);
+  return fn(x, y, d, a);
 }
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
