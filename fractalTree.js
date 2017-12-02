@@ -10,12 +10,14 @@ const tree = {
   fruitSwitch: function() {this.fruit = !this.fruit; regrowth()},
   colorful: true,
   inverted: false,
-  slow: false,
+  asynch: false,
+  asynchDelay: 5,
   growthUnits: 10,
   colors: ['#3B0F00','#541500','#751D00','#8F2501',  '#2BAD00','#00DE1E',  '#6000DE','#AF02E8',   '#E80288','#E80253','#E8022C', '#A30000'],
   //colors: ['#F0F','#FA0','#0F0','#0FF', '#0004FF','#8400FF'],
   colorStack: [],
-  returnToDefault: false
+  returnToDefault: false,
+  callCount: 0
 };
 const canvas = document.getElementById('canv');
 const context = canvas.getContext('2d');
@@ -24,30 +26,28 @@ context.lineCap = 'round';
 async function grow(growths, x, y, len, w, a) {
   context.translate(x, y);
   if (growths < tree.branches) {
+    if (tree.asynch) await timeout(tree.asynchDelay);
+
     (tree.colorful) ? context.strokeStyle = tree.colors[growths] : (tree.inverted) ? context.strokeStyle = 'white' : context.strokeStyle = 'black';
     context.lineWidth = w;
     const endLine = -len, half = -len/2;
     if (!tree.seed) context.rotate(a * Math.PI / 180);
     context.beginPath();
     context.moveTo(0, 0);
-    //  console.log('growths');
-    if (tree.slow) {
-      //await sleep(slowReach, x, y, y-len); // (tree.seed) ? slowReach(0,canvas.height-len) : 
-      await sleep(draw, x, half, len, a); // (tree.seed) ? slowReach(0,canvas.height-len) : 
-    } else {
-      (tree.seed) ? context.lineTo(0, -len) : context.quadraticCurveTo(tree.curve * a * len / 50, half, x, -len); //causes initial elongation
-      context.stroke();
-    }
+
+    (tree.seed) ? context.lineTo(0, -len) : context.quadraticCurveTo(tree.curve * a * len / 50, half, x, -len); //causes initial elongation
+    context.stroke();
+
     if (tree.seed) tree.seed = false;
+
     context.save();
     
-    //  console.log('last thing');
-    grow(growths + 1, 0, -len, len * 0.8, w * 0.8, a);
+    (tree.asynch) ? await grow(growths + 1, 0, -len, len * 0.8, w * 0.8, a) : grow(growths + 1, 0, -len, len * 0.8, w * 0.8, a);
 
     context.restore();
     context.save();
     
-    grow(growths + 1, 0, -len, len * 0.8, w * 0.8, -a / tree.angleOffset);
+    (tree.asynch) ? await grow(growths + 1, 0, -len, len * 0.8, w * 0.8, -a / tree.angleOffset) : grow(growths + 1, 0, -len, len * 0.8, w * 0.8, -a / tree.angleOffset);
     
     context.restore();
   } else if (tree.fruit) {
@@ -58,34 +58,9 @@ async function grow(growths, x, y, len, w, a) {
   }
 }
 
-async function draw(x, half, len, a) {
-  (tree.seed) ? context.lineTo(0, -len) : context.quadraticCurveTo(tree.curve * a * len / 50, half, x, -len); //causes initial elongation
-  context.stroke();
-}
-
-async function sleep(fn, x, y, d, a) {
-  await timeout(1000);
-  return fn(x, y, d, a);
-}
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-async function slowReach(x, y, destination) { 
-  if (y > destination) { console.log(`y: ${y}, dest: ${destination}, x: ${x}`);
-    context.lineTo(0, 0 - tree.growthUnits);
-    context.stroke();
-    
-    //context.fillStyle = 'black';
-    //context.strokeRect(0,0,300,300);
-
-    context.beginPath();
-    context.moveTo(x, y - tree.growthUnits);
-
-    await sleep(slowReach, x, y - tree.growthUnits, destination);  
-  }
-}
-//const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 function adjustAngle(newAng) {
   tree.angle = parseInt(newAng);
@@ -170,8 +145,16 @@ async function regrowth() {
   (tree.inverted) ? context.fillStyle = 'black' : context.fillStyle = 'white';
   context.fillRect(0,0,canvas.width,canvas.height);
   context.save();
-  await grow(0, canvas.width/2, canvas.height*0.95, tree.length, tree.width, tree.angle); //, tree.colors[Math.floor(Math.random() * tree.colors.length)]); // , tree.colors[Math.floor(Math.random() * tree.colors.length)]
+  (tree.asynch) ? await grow(0, canvas.width/2, canvas.height*0.95, tree.length, tree.width, tree.angle) : grow(0, canvas.width/2, canvas.height*0.95, tree.length, tree.width, tree.angle); //, tree.colors[Math.floor(Math.random() * tree.colors.length)]); // , tree.colors[Math.floor(Math.random() * tree.colors.length)]
   context.restore();
+}
+
+async function asynchronousGrowth() {
+  tree.asynch = !tree.asynch;
+  if (tree.asynch) {
+    await regrowth();
+    if (tree.asynch) tree.asynch = !tree.asynch;
+  }
 }
 
 document.addEventListener("keydown", keyPushed);
@@ -200,12 +183,6 @@ const invert = () => {
   regrowth();
 };
 
-async function slowGrow() {
-  tree.slow = true;
-  await regrowth();  
-  //tree.slow = false;
-  console.log('end of slowGrow')
-}
 
 context.fillStyle = 'white';
 context.fillRect(0,0,canvas.width,canvas.height);
