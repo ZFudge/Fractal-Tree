@@ -13,7 +13,6 @@ const tree = {
   slow: false,
   growthUnits: 10,
   colors: ['#3B0F00','#541500','#751D00','#8F2501',  '#2BAD00','#00DE1E',  '#6000DE','#AF02E8',   '#E80288','#E80253','#E8022C', '#A30000'],
-  //colors: ['#F0F','#FA0','#0F0','#0FF', '#0004FF','#8400FF'],
   colorStack: [],
   returnToDefault: false
 };
@@ -85,7 +84,6 @@ async function slowReach(x, y, destination) {
     await sleep(slowReach, x, y - tree.growthUnits, destination);  
   }
 }
-//const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 function adjustAngle(newAng) {
   tree.angle = parseInt(newAng);
@@ -94,10 +92,9 @@ function adjustAngle(newAng) {
 const angleSlide = document.getElementById('angleSlider');
 function resetAngle() {
   if (tree.returnToDefault) {
-    tree.angle = 45;
-    angleSlide.value = 45;
+    tree.angle = angleSlide.value = 45;
+    regrowth();
   }
-  regrowth();
 }
 
 function adjustAngleOffset(newAngOff) {
@@ -107,10 +104,9 @@ function adjustAngleOffset(newAngOff) {
 const angleOffsetSlide = document.getElementById('angleOffsetSlider');
 function resetAngleOffset() {
   if (tree.returnToDefault) {
-    tree.angleOffset = 1;
-    angleOffsetSlide.value = 1;
+    tree.angleOffset = angleOffsetSlide.value = 1;
+    regrowth();
   }
-  regrowth();
 }
 
 function adjustWidth(newWid) {
@@ -120,10 +116,9 @@ function adjustWidth(newWid) {
 const widthSlide = document.getElementById('widthSlider');
 function resetWidth() {
   if (tree.returnToDefault) {
-    tree.width = 10;
-    widthSlide.value = 10;
+    tree.width = widthSlide.value = 10;
+    regrowth();
   }
-  regrowth();
 }
 
 function adjustLength(newLen) {
@@ -133,10 +128,9 @@ function adjustLength(newLen) {
 const lengthSlide = document.getElementById('lengthSlider');
 function resetLength() {
   if (tree.returnToDefault) {
-    tree.length = 100;
-    lengthSlide.value = 100;
+    tree.length = lengthSlide.value = 100;
+    regrowth();
   }
-  regrowth();
 }
 
 function adjustBranches(newBrNum) {
@@ -146,10 +140,9 @@ function adjustBranches(newBrNum) {
 const branchSlide = document.getElementById('branchSlider');
 function resetBranches() {
   if (tree.returnToDefault) {
-    tree.branches = 3;
-    branchSlide.value = 3;
+    tree.branches = branchSlide.value = 3;
+    regrowth();
   }
-  regrowth();
 }
 
 function adjustCurve(newCurve) {
@@ -159,10 +152,9 @@ function adjustCurve(newCurve) {
 const curveSlide = document.getElementById('curveSlider');
 function resetCurve() {
   if (tree.returnToDefault) {
-    tree.curve = 0;
-    curveSlide.value = 0;
+    tree.curve = curveSlide.value = 0;
+    regrowth();
   }
-  regrowth();
 }
 
 async function regrowth() {
