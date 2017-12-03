@@ -2,6 +2,8 @@
 
 <html>
 <head>
+	<meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Fractal Tree</title>
 	<link rel="shortcut icon" type="image/x-icon" href="tree.ico">
 </head>
@@ -32,15 +34,10 @@
 		</div>
 		<div style='font-size: 10px;'>(ctrl + click to reset range)</div>
 		<div>
-			<span>
-				<button onclick='colorOnOff()'>Color On/Off</button>
-			</span>
-			<span>
-				<button onclick='invert()'>Invert Background</button>
-			</span>
-			<span>
-				<button onclick='tree.fruitSwitch()'>Fruit</button>
-			</span>
+			<button onclick='colorOnOff()'>Color On/Off</button>
+			<button onclick='invert()'>Invert Background</button>
+			<button onclick='tree.fruitSwitch()'>Fruit</button>
+			<button onclick='asynchronousGrowth()'>Async</button>
 		</div>
 	</div>
 	<script src='fractalTree.js'></script>
