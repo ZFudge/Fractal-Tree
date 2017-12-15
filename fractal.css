@@ -1,0 +1,142 @@
+iframe {
+  position: relative;
+  z-index: 1;
+  float: left;
+  display: inline-block;  
+}
+
+html, body {
+    height: 90%;
+}
+
+body {
+	text-align: center;
+	font-family: sans-serif;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#fractal canvas {
+  position: absolute;
+  left: 0;
+
+  background-color: black;
+}
+
+#fractal {
+  text-align: center;
+}
+
+#controls {
+  display:  inline-block;
+  position: fixed;
+  width:    100%;
+  left:     0;
+  z-index:  1;
+  bottom:   5px;
+  transition-duration: 1.2s;
+}
+
+#controller-box {
+position:relative;
+z-index:10;
+float:right;
+min-width:440px;
+display:inline-block;
+padding:0px 30px 0px 30px;
+margin-top:200px;
+}
+
+#inner-container {
+  width: 420px;
+  margin: auto;
+  position: relative;
+}
+
+.sliders {
+  text-align: right;
+}
+.names {
+  float: left;
+  margin-left: 10px;
+}
+.values {
+  position: relative;
+  top: 3px;
+}
+
+span {
+  position: relative;
+  background: rgba(208, 208, 208, 0.5);
+  border-radius: 5px;
+  padding: 2px 5px;
+}
+
+
+input {
+  -webkit-appearance: none; /* overrides default CSS*/
+  width: 200px;
+  margin: 10px;
+  cursor: pointer;
+  
+  height: 3px;
+  background: #BBB;
+  border-radius: 5px;
+}
+input:focus {
+  outline: none;
+}
+input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  
+  border: 0;
+  background: #558;
+  border-radius: 50%; 
+  width: 15px;
+  height: 15px;
+}
+input::-moz-range-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  
+  border: 0;
+  background: #558;
+  border-radius: 50%; 
+  width: 15px;
+  height: 15px;
+}
+::-webkit-range-track {
+  background: #BBB;
+  border: 0;
+}
+::-moz-range-track {
+  background: #BBB;
+  border: 0;
+}
+
+#buttons {
+  
+}
+
+button {
+  background: #557;
+  color: #EEE;
+  border: 3px solid transparent;
+  border-radius: 7px;
+  cursor: pointer;
+  margin:2px;
+  padding: 5px 10px;
+  text-decoration: none;
+  outline: hidden;
+}
+button:hover {
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.19);
+}
+button:focus {
+  outline: none;
+}

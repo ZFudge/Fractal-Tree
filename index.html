@@ -1,45 +1,71 @@
 <!DOCTYPE html>
-
 <html>
 <head>
 	<meta charset="UTF-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Fractal Tree</title>
+	<title>ZFudge - Fractal Tree</title>
 	<link rel="shortcut icon" type="image/x-icon" href="tree.ico">
+	<link rel='stylesheet' type='text/css' href='fractal.css'>
 </head>
 <body>
-	<div style='text-align:center;'>
-		<canvas id='canv' height='600px' width='750px'></canvas>
-		<div>
-			<span>
-				Angle<input type="range" step="0.5" min="-315" max="315" value="45" oninput="adjustAngle(this.value)" onclick='resetAngle()' id='angleSlider'>
-			</span>
-			<span>
-				Thickness<input type="range" min="5" max="30" value="10" oninput="adjustWidth(this.value)" onclick='resetWidth()' id='widthSlider'>
-			</span>
-			<span>
-				Size<input type="range" min="20" max="125" value="100" oninput="adjustLength(this.value)" onclick='resetLength()' id='lengthSlider'>
-			</span>
-		</div>
-		<div>
-			<span>
-				Branches<input type="range" min="0" max="11" value="4" oninput="adjustBranches(this.value)" onclick='resetBranches()' id='branchSlider'>
-			</span>
-			<span>
-				AngleOffset<input type="range" min="0" max="4" step="0.1" value="1" oninput="adjustAngleOffset(this.value)" onclick='resetAngleOffset()' id='angleOffsetSlider'>
-			</span>
-			<span>
-				Curve<input type="range" min="-0.4" max="0.7" step="0.05" value="0" oninput="adjustCurve(this.value)" onclick='resetCurve()' id='curveSlider'>
-			</span>
-		</div>
-		<div style='font-size: 10px;'>(ctrl + click to reset range)</div>
-		<div>
-			<button onclick='colorOnOff()'>Color On/Off</button>
-			<button onclick='invert()'>Invert Background</button>
-			<button onclick='tree.fruitSwitch()'>Fruit</button>
-			<button onclick='asynchronousGrowth()'>Async</button>
+	<div id='fractal'>
+		<iframe id='frame' src="../menu.html" frameborder="0" scrolling='no' height='300' width='125'></iframe>
+		<canvas id='canv' height='800px' width='1200px'></canvas>
+		<div id='controls'>
+			<div id='inner-container'>
+				<div class='sliders'>
+					<span class='names'>Branches</span>		
+					<span id='branch-value' class='values'>3</span>
+					<input type="range" min="2" max="8" value="3" oninput="adjustBranches(this.value)" onclick='resetBranches()' id='branchSlider'>
+				</div>
+				<div class='sliders'>
+					<span class='names'>Angle</span>	
+					<span id='angle-value' class='values'>45</span>
+					<input type="range" step="0.5" min="-315" max="315" value="45" oninput="adjustAngle(this.value)" onclick='resetAngle()' id='angleSlider'>
+				</div>
+				<div class='sliders'>
+					<span class='names'>Angle-Offset</span>	
+					<span id='angle-offset-value' class='values'>0%</span>
+					<input type="range" min="0" max="4" step="0.1" value="1" oninput="adjustAngleOffset(this.value)" onclick='resetAngleOffset()' id='angleOffsetSlider'>
+				</div>
+				<div class='sliders'>
+					<span class='names'>Thickness</span>	
+					<span id='width-value' class='values'>10</span>
+					<input type="range" min="5" max="30" value="10" oninput="adjustWidth(this.value)" onclick='resetWidth()' id='widthSlider'>
+				</div>
+				<div class='sliders'>
+					<span class='names'>Size</span>	
+					<span id='length-value' class='values'>100</span>
+					<input type="range" min="20" max="125" value="100" oninput="adjustLength(this.value)" onclick='resetLength()' id='lengthSlider'>
+				</div>
+				<div class='sliders'>
+					<span class='names'>Curve</span>	
+					<span id='curve-value' class='values'>0.00</span>
+					<input type="range" min="-0.4" max="0.7" step="0.05" value="0" oninput="adjustCurve(this.value)" onclick='resetCurve()' id='curveSlider'>
+				</div>
+				<div class='sliders'>
+					<span class='names'>Async-Delay (ms)</span>	
+					<span id='async-value' class='values'>5</span>
+					<input type="range" min="0" max="100" value="5" oninput="adjustAsyncDelay(this.value)" onclick='resetAsyncDelay()' id='asyncSlider'>
+				</div> 
+				<div id='buttons'>
+					<button onclick='colorOnOff()'>Color On/Off</button>
+					<button onclick='invert()'>Invert Background</button>
+					<button onclick='tree.fruitSwitch()'>Fruit</button>
+					<button onclick='asynchronousGrowth()'>Async</button>
+				</div>
+			</div>
 		</div>
 	</div>
 	<script src='fractalTree.js'></script>
+	<script type="text/javascript">
+		const controls = document.getElementById('controls');
+		const fadeIn = ()=>controls.style.opacity = 1;
+		const fadeOut = ()=>controls.style.opacity = 0.2;
+		document.getElementById('inner-container').addEventListener('mouseenter', fadeIn);
+		document.getElementById('inner-container').addEventListener('mouseleave', fadeOut);
+
+		setTimeout(function() {fadeOut()},100);
+	</script>
 </body>
 </html>

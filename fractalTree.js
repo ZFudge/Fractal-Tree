@@ -1,10 +1,17 @@
+const canvas = document.getElementById('canv');
+const context = canvas.getContext('2d');
+
+function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const tree = {
   seed: true,
   length: 100,
   width: 10,
   angle: 45,
   angleOffset: 1,
-  branches: 4,
+  branches: 3,
   curve: 0,
   fruit: false,
   fruitSwitch: function() {this.fruit = !this.fruit; regrowth()},
@@ -16,13 +23,15 @@ const tree = {
   colors: ['#3B0F00','#541500','#751D00','#8F2501',  '#2BAD00','#00DE1E',  '#6000DE','#AF02E8',   '#E80288','#E80253','#E8022C', '#A30000'],
   colorStack: [],
   returnToDefault: false,
-  callCount: 0
+  callCount: 0,
+  seedHeight: canvas.height / 2 + window.innerHeight/2 * 0.3,
+  getNewSeedHeight: function() {
+    return canvas.height / 2 + window.innerHeight/2 * 0.3;
+  }
 };
-const canvas = document.getElementById('canv');
-const context = canvas.getContext('2d');
-context.lineCap = 'round';
 
 async function grow(growths, x, y, len, w, a) {
+  context.lineCap = 'round';
   context.translate(x, y);
   if (growths < tree.branches) {
     if (tree.asynch) await timeout(tree.asynchDelay);
@@ -57,88 +66,12 @@ async function grow(growths, x, y, len, w, a) {
   }
 }
 
-function timeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function adjustAngle(newAng) {
-  tree.angle = parseInt(newAng);
-  regrowth();
-}
-const angleSlide = document.getElementById('angleSlider');
-function resetAngle() {
-  if (tree.returnToDefault) {
-    tree.angle = angleSlide.value = 45;
-    regrowth();
-  }
-}
-
-function adjustAngleOffset(newAngOff) {
-  tree.angleOffset = parseFloat(newAngOff);
-  regrowth();
-}
-const angleOffsetSlide = document.getElementById('angleOffsetSlider');
-function resetAngleOffset() {
-  if (tree.returnToDefault) {
-    tree.angleOffset = angleOffsetSlide.value = 1;
-    regrowth();
-  }
-}
-
-function adjustWidth(newWid) {
-  tree.width = parseInt(newWid);
-  regrowth();
-}
-const widthSlide = document.getElementById('widthSlider');
-function resetWidth() {
-  if (tree.returnToDefault) {
-    tree.width = widthSlide.value = 10;
-    regrowth();
-  }
-}
-
-function adjustLength(newLen) {
-  tree.length = parseFloat(newLen);
-  regrowth();
-}
-const lengthSlide = document.getElementById('lengthSlider');
-function resetLength() {
-  if (tree.returnToDefault) {
-    tree.length = lengthSlide.value = 100;
-    regrowth();
-  }
-}
-
-function adjustBranches(newBrNum) {
-  tree.branches = parseInt(newBrNum);
-  regrowth();
-}
-const branchSlide = document.getElementById('branchSlider');
-function resetBranches() {
-  if (tree.returnToDefault) {
-    tree.branches = branchSlide.value = 3;
-    regrowth();
-  }
-}
-
-function adjustCurve(newCurve) {
-  tree.curve = parseFloat(newCurve);
-  regrowth();
-}
-const curveSlide = document.getElementById('curveSlider');
-function resetCurve() {
-  if (tree.returnToDefault) {
-    tree.curve = curveSlide.value = 0;
-    regrowth();
-  }
-}
-
 async function regrowth() {
   tree.seed = true;
   (tree.inverted) ? context.fillStyle = 'black' : context.fillStyle = 'white';
   context.fillRect(0,0,canvas.width,canvas.height);
   context.save();
-  (tree.asynch) ? await grow(0, canvas.width/2, canvas.height*0.95, tree.length, tree.width, tree.angle) : grow(0, canvas.width/2, canvas.height*0.95, tree.length, tree.width, tree.angle); //, tree.colors[Math.floor(Math.random() * tree.colors.length)]); // , tree.colors[Math.floor(Math.random() * tree.colors.length)]
+  (tree.asynch) ? await grow(0, canvas.width/2, tree.seedHeight, tree.length, tree.width, tree.angle) : grow(0, canvas.width/2, tree.seedHeight, tree.length, tree.width, tree.angle); //, tree.colors[Math.floor(Math.random() * tree.colors.length)]); // , tree.colors[Math.floor(Math.random() * tree.colors.length)]
   context.restore();
 }
 
@@ -149,6 +82,95 @@ async function asynchronousGrowth() {
     if (tree.asynch) tree.asynch = !tree.asynch;
   }
 }
+
+// Ranged inputs
+
+const branchSlide = document.getElementById('branchSlider');
+const branchValue = document.getElementById('branch-value');
+function adjustBranches(newBrNum) {
+  branchValue.innerHTML = tree.branches = parseInt(newBrNum);
+  regrowth();
+}
+function resetBranches() {
+  if (tree.returnToDefault) {
+    tree.branches = branchValue.innerHTML = branchSlide.value = 3;
+    regrowth();
+  }
+}
+
+const angleSlide = document.getElementById('angleSlider');
+const angleValue = document.getElementById('angle-value');
+function adjustAngle(newAng) {
+  angleValue.innerHTML = tree.angle = parseInt(newAng);
+  regrowth();
+}
+function resetAngle() {
+  if (tree.returnToDefault) {
+    tree.angle = angleValue.innerHTML = angleSlide.value = 45;
+    regrowth();
+  }
+}
+
+const angleOffsetSlide = document.getElementById('angleOffsetSlider');
+const angleOffsetValue = document.getElementById('angle-offset-value');
+function adjustAngleOffset(newAngOff) {
+  tree.angleOffset = parseFloat(newAngOff).toFixed(1);
+  angleOffsetValue.innerHTML = ((parseFloat(newAngOff) - 1) * 100 ).toFixed(0)  + '%';
+  regrowth();
+}
+function resetAngleOffset() {
+  if (tree.returnToDefault) {
+    tree.angleOffset = angleOffsetSlide.value = 1;
+    angleOffsetValue.innerHTML = '0%';
+    regrowth();
+  }
+}
+
+const widthSlide = document.getElementById('widthSlider');
+const widthValue = document.getElementById('width-value');
+function adjustWidth(newWid) {
+  widthValue.innerHTML = tree.width = parseInt(newWid);
+  regrowth();
+}
+function resetWidth() {
+  if (tree.returnToDefault) {
+    tree.width = widthValue.innerHTML = widthSlide.value = 10;
+    regrowth();
+  }
+}
+
+const lengthSlide = document.getElementById('lengthSlider');
+const lengthValue = document.getElementById('length-value');
+function adjustLength(newLen) {
+  lengthValue.innerHTML = tree.length = parseFloat(newLen);
+  regrowth();
+}
+function resetLength() {
+  if (tree.returnToDefault) {
+    tree.length = lengthValue.innerHTML = lengthSlide.value = 100;
+    regrowth();
+  }
+}
+
+const curveSlide = document.getElementById('curveSlider');
+const curveValue = document.getElementById('curve-value');
+function adjustCurve(newCurve) {
+  tree.curve = parseFloat(newCurve);
+  curveValue.innerHTML = parseFloat(newCurve).toFixed(2);
+  regrowth();
+}
+function resetCurve() {
+  if (tree.returnToDefault) {
+    tree.curve = curveSlide.value = 0;
+    curveValue.innerHTML = '0.00';
+    regrowth();
+  }
+}
+
+const asyncDelaySlide = document.getElementById('asyncSlider');
+const asyncDelayValue = document.getElementById('async-value');
+const adjustAsyncDelay = (newAsync) =>  asyncDelayValue.innerHTML = tree.asynchDelay = parseFloat(newAsync);
+const resetAsyncDelay = () => (tree.returnToDefault) ? tree.asynchDelay = asyncDelayValue.innerHTML = asyncDelaySlide.value = 5 : null;
 
 document.addEventListener("keydown", keyPushed);
 document.addEventListener("keyup", keyReleased);
@@ -173,6 +195,7 @@ function colorOnOff() {
 
 const invert = () => {
   tree.inverted = !tree.inverted;
+  (tree.inverted) ? Array.from(document.getElementsByTagName('span')).forEach(function(cur,ind,arr){cur.style.color='white'}) : Array.from(document.getElementsByTagName('span')).forEach(function(cur,ind,arr){cur.style.color='black'});
   regrowth();
 };
 
@@ -180,6 +203,24 @@ const invert = () => {
 context.fillStyle = 'white';
 context.fillRect(0,0,canvas.width,canvas.height);
 setColorStack();
-context.save();
-grow(0, canvas.width/2, canvas.height*0.95, tree.length, tree.width, tree.angle, tree.colors[Math.floor(Math.random() * tree.colors.length)]); // , tree.colors[Math.floor(Math.random() * tree.colors.length)]
-context.restore();
+
+window.addEventListener('resize', screen);
+function screen() {
+  canvas.width = window.innerWidth - 10;
+  canvas.height = window.innerHeight - 10; 
+  if (window.innerHeight < 600) {
+    tree.seedHeight = canvas.height - 210;
+    console.log('small');
+    //snow.seedX = canvas.width/3,
+    //snow.seedY = canvas.height/2,
+    //controlBox.style.marginTop = ( window.innerHeight / 2 - ( controlBox.height / 2 ) ) + 'px';  
+  } else {
+    tree.seedHeight = tree.getNewSeedHeight();
+    //snow.seedX = canvas.width/2,
+    //snow.seedY = canvas.height/3,
+    //controlBox.style.marginTop = ( window.innerHeight - controlBox.height + 50) + 'px';
+  }
+  regrowth();
+}
+
+screen();
