@@ -1,15 +1,10 @@
-iframe {
-  position: relative;
-  z-index: 1;
-  float: left;
-  display: inline-block;  
-}
-
-html, body {
-    height: 90%;
-}
+html, body, div, canvas { 
+    margin: 0;
+    padding: 0;
+} /* removes margin around background canvas */
 
 body {
+  overflow: hidden;
 	text-align: center;
 	font-family: sans-serif;
 	-moz-user-select: none;

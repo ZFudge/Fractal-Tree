@@ -206,11 +206,10 @@ setColorStack();
 
 window.addEventListener('resize', screen);
 function screen() {
-  canvas.width = window.innerWidth - 10;
-  canvas.height = window.innerHeight - 10; 
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight; 
   if (window.innerHeight < 600) {
     tree.seedHeight = canvas.height - 210;
-    console.log('small');
     //snow.seedX = canvas.width/3,
     //snow.seedY = canvas.height/2,
     //controlBox.style.marginTop = ( window.innerHeight / 2 - ( controlBox.height / 2 ) ) + 'px';  
