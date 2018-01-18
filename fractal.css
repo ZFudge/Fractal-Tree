@@ -30,7 +30,7 @@ body {
   width:    100%;
   left:     0;
   z-index:  1;
-  bottom:   5px;
+  bottom:   12px;
   transition-duration: 1.2s;
 }
 
