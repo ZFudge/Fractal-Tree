@@ -1,9 +1,7 @@
 const canvas = document.getElementById('canv');
 const context = canvas.getContext('2d');
 
-function timeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+const timeout = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const tree = {
   seed: true,
@@ -14,7 +12,10 @@ const tree = {
   branches: 3,
   curve: 0,
   fruit: false,
-  fruitSwitch: function() {this.fruit = !this.fruit; regrowth()},
+  fruitSwitch: function() {
+    this.fruit = !this.fruit; 
+    regrowth();
+  },
   colorful: true,
   inverted: false,
   asynch: false,
@@ -30,6 +31,7 @@ const tree = {
   }
 };
 
+// rescursively draws tree branches from seed to finish
 async function grow(growths, x, y, len, w, a) {
   context.lineCap = 'round';
   context.translate(x, y);
@@ -66,6 +68,7 @@ async function grow(growths, x, y, len, w, a) {
   }
 }
 
+// resets canvas, tree object, and invokes growth
 async function regrowth() {
   tree.seed = true;
   (tree.inverted) ? context.fillStyle = 'black' : context.fillStyle = 'white';
@@ -208,17 +211,7 @@ window.addEventListener('resize', screen);
 function screen() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight; 
-  if (window.innerHeight < 600) {
-    tree.seedHeight = canvas.height - 210;
-    //snow.seedX = canvas.width/3,
-    //snow.seedY = canvas.height/2,
-    //controlBox.style.marginTop = ( window.innerHeight / 2 - ( controlBox.height / 2 ) ) + 'px';  
-  } else {
-    tree.seedHeight = tree.getNewSeedHeight();
-    //snow.seedX = canvas.width/2,
-    //snow.seedY = canvas.height/3,
-    //controlBox.style.marginTop = ( window.innerHeight - controlBox.height + 50) + 'px';
-  }
+  (window.innerHeight < 600) ? tree.seedHeight = canvas.height - 210 : tree.seedHeight = tree.getNewSeedHeight();
   regrowth();
 }
 
