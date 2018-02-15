@@ -6,68 +6,101 @@
 	<title>ZFudge - Fractal Tree</title>
 	<link rel="shortcut icon" type="image/x-icon" href="tree.ico">
 	<link rel='stylesheet' type='text/css' href='fractal.css'>
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 </head>
 <body>
-	<div id='fractal'>
-		<canvas id='canv' height='800px' width='1200px'></canvas>
-		<div id='controls'>
-			<div id='inner-container'>
+	<canvas id='fractal-canvas' height='800' width='1200'></canvas>
+	<div id='controls-fixed-bottom'>
+		<div id='outer-controls-container'>
+			<div id="sliders-container">
 				<div class='sliders'>
-					<span class='names'>Branches</span>		
-					<span id='branch-value' class='values'>3</span>
-					<input type="range" min="2" max="8" value="3" oninput="adjustBranches(this.value)" onclick='resetBranches()' id='branchSlider'>
-				</div>
-				<div class='sliders'>
-					<span class='names'>Angle</span>	
-					<span id='angle-value' class='values'>45</span>
-					<input type="range" step="0.5" min="-315" max="315" value="45" oninput="adjustAngle(this.value)" onclick='resetAngle()' id='angleSlider'>
-				</div>
-				<div class='sliders'>
-					<span class='names'>Angle-Offset</span>	
-					<span id='angle-offset-value' class='values'>0%</span>
-					<input type="range" min="0" max="4" step="0.1" value="1" oninput="adjustAngleOffset(this.value)" onclick='resetAngleOffset()' id='angleOffsetSlider'>
-				</div>
-				<div class='sliders'>
-					<span class='names'>Curve</span>	
-					<span id='curve-value' class='values'>0.00</span>
-					<input type="range" min="-0.4" max="0.7" step="0.05" value="0" oninput="adjustCurve(this.value)" onclick='resetCurve()' id='curveSlider'>
-				</div>
-				<div class='sliders'>
-					<span class='names'>Thickness</span>	
-					<span id='width-value' class='values'>10</span>
-					<input type="range" min="5" max="30" value="10" oninput="adjustWidth(this.value)" onclick='resetWidth()' id='widthSlider'>
-				</div>
-				<div class='sliders'>
-					<span class='names'>Size</span>	
-					<span id='length-value' class='values'>100</span>
-					<input type="range" min="20" max="125" value="100" oninput="adjustLength(this.value)" onclick='resetLength()' id='lengthSlider'>
-				</div>
-				<div class='sliders'>
-					<span class='names'>Async-Delay (ms)</span>	
-					<span id='async-value' class='values'>5</span>
-					<input type="range" min="0" max="100" value="5" oninput="adjustAsyncDelay(this.value)" onclick='resetAsyncDelay()' id='asyncSlider'>
-				</div> 
-				<div id='buttons'>
-					<div style="font-size:12px">On/Off Buttons</div>
-					<div>
-						<button onclick='colorOnOff()'>Tree Color</button>
-						<button onclick='invert()'>Invert Background</button>
-						<button onclick='tree.fruitSwitch()'>Fruit</button>
-						<button onclick='asynchronousGrowth()'>Async</button>
+					<div class='names'>
+						<span class="name-text">Branches</span>
 					</div>
+					<div class='range-container'>
+						<input type="range" min="2" max="8" value="3" oninput="adjustBranches(this.value)" onclick='resetBranches()' id='branchSlider'>
+					</div>
+					<div class='values'>
+						<span id='branch-value'>3</span>
+					</div>
+				</div>
+				<div class='sliders'>
+					<div class='names'>
+						<span class="name-text">Angle</span>
+					</div>
+					<div class='range-container'>
+						<input type="range" step="0.5" min="-315" max="315" value="45" oninput="adjustAngle(this.value)" onclick='resetAngle()' id='angleSlider'>
+					</div>
+					<div class='values'>
+						<span id='angle-value'>45</span>
+					</div>
+				</div>
+				<div class='sliders'>
+					<div class='names'>
+						<span class="name-text">Angle-Offset</span>
+					</div>
+					<div class='range-container'>
+						<input type="range" min="0" max="4" step="0.1" value="1" oninput="adjustAngleOffset(this.value)" onclick='resetAngleOffset()' id='angleOffsetSlider'>
+					</div>
+					<div class='values'>
+						<span id='angle-offset-value'>0%</span>
+					</div>
+				</div>
+				<div class='sliders'>
+					<div class='names'>
+						<span class="name-text">Curve</span>
+					</div>
+					<div class='range-container'>
+						<input type="range" min="-0.4" max="0.7" step="0.05" value="0" oninput="adjustCurve(this.value)" onclick='resetCurve()' id='curveSlider'>
+					</div>
+					<div class='values'>
+						<span id='curve-value'>0.00</span>
+					</div>
+				</div>
+				<div class='sliders'>
+					<div class='names'>
+						<span class="name-text">Thickness</span>
+					</div>
+					<div class='range-container'>
+						<input type="range" min="5" max="30" value="10" oninput="adjustWidth(this.value)" onclick='resetWidth()' id='widthSlider'>
+					</div>
+					<div class='values'>
+						<span id='width-value'>10</span>
+					</div>
+				</div>
+				<div class='sliders'>
+					<div class='names'>
+						<span class="name-text">Size</span>
+					</div>
+					<div class='range-container'>
+						<input type="range" min="20" max="125" value="100" oninput="adjustLength(this.value)" onclick='resetLength()' id='lengthSlider'>
+					</div>
+					<div class='values'>
+						<span id='length-value'>100</span>
+					</div>
+				</div>
+				<div class='sliders'>
+					<div class='names'>
+						<span class="name-text">Async-Delay</span>
+					</div>
+					<div class='range-container'>
+						<input type="range" min="0" max="100" value="5" oninput="adjustAsyncDelay(this.value)" onclick='resetAsyncDelay()' id='asyncSlider'>
+					</div>
+					<div class='values'>
+						<span id='async-value'>5</span>
+					</div>
+				</div>
+			</div>
+			<div id='button-container'>
+				<div>
+					<button onclick='colorOnOff()'>Color</button>
+					<button onclick='invert()'>Background</button>
+					<button onclick='tree.fruitSwitch()'>Fruit</button>
+					<button onclick='asynchronousGrowth()'>Async</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	<script src='fractal.js'></script>
-	<script type="text/javascript">
-		const controls = document.getElementById('controls');
-		const fadeIn = ()=>controls.style.opacity = 1;
-		const fadeOut = ()=>controls.style.opacity = 0.2;
-		document.getElementById('inner-container').addEventListener('mouseenter', fadeIn);
-		document.getElementById('inner-container').addEventListener('mouseleave', fadeOut);
-
-		setTimeout(function() {fadeOut()},100);
-	</script>
 </body>
 </html>
