@@ -12,21 +12,28 @@ body {
 	-webkit-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+  transition-duration: 0.15s;
 }
 
 #fractal-canvas {
   height: 100%;
   width: 100%;
+  z-index: 2;
+  pointer-events: none;
+  position: relative;
 }
 
 #controls-fixed-bottom {
   position: fixed;
   width:    100%;
   z-index:  1;
-  bottom: 0;
-  transition-duration: 1.2s;
+  bottom: 0.75em;
+  transition-duration: 0.7s;
   padding: 0.25em;
-  /*opacity: 0.5;*/
+  opacity: 0.35;
+}
+#controls-fixed-bottom:hover {
+  opacity: 1;
 }
 
 #outer-controls-container {
@@ -75,11 +82,11 @@ body {
 }
 
 input {
-  height: 1.8em;
+  height: 3px;
   width: 100%;
   cursor: pointer;
   -webkit-appearance: none; /* overrides default CSS*/
-  background: transparent;
+  background: #222;
   border-radius: 0.375em;
   grid-column-start: 1;
   grid-column-end: 2;
@@ -89,23 +96,23 @@ input:focus {
 }
 input::-webkit-slider-thumb {
   height: 1.8em;
-  width: 0.4em;
-  border-radius: 1px; 
+  width: 0.7em;
+  border-radius: 3px; 
   -webkit-appearance: none;
   appearance: none;
   cursor: pointer;
-  border: 0;
-  background: #000;
+  border: 2px solid #EEE;
+  background: #222;
 }
 input::-moz-range-thumb {
   height: 1.8em;
-  width: 0.4em;
-  border-radius: 1px; 
+  width: 5px;
+  border-radius: 3px; 
   -webkit-appearance: none;
   appearance: none;
   cursor: pointer;
-  border: 0;
-  background: #000;
+  border: 1px solid #EEE;
+  background: #222;
 }
 ::-webkit-range-track {
   background: transparent;
@@ -116,14 +123,9 @@ input::-moz-range-thumb {
   border: 0;
 }
 
-.name-text {
-  background-color: #FFFFFF99;
-  border-radius: 0.2em;
-}
-
 button {
   padding: 4px 10px;
-  background: #999;
+  background: #222;
   border-radius: 7px;
   border: 3px solid transparent;
   color: #EEE;
