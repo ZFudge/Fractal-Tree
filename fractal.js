@@ -1,4 +1,4 @@
-const canvas = document.getElementById('canv');
+const canvas = document.getElementById('fractal-canvas');
 const context = canvas.getContext('2d');
 
 const timeout = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -71,8 +71,7 @@ async function grow(growths, x, y, len, w, a) {
 // resets canvas, tree object, and invokes growth
 async function regrowth() {
   tree.seed = true;
-  (tree.inverted) ? context.fillStyle = 'black' : context.fillStyle = 'white';
-  context.fillRect(0,0,canvas.width,canvas.height);
+  (tree.inverted) ? context.fillRect(0,0,canvas.width,canvas.height) : context.clearRect(0,0,canvas.width,canvas.height);
   context.save();
   (tree.asynch) ? await grow(0, canvas.width/2, tree.seedHeight, tree.length, tree.width, tree.angle) : grow(0, canvas.width/2, tree.seedHeight, tree.length, tree.width, tree.angle); //, tree.colors[Math.floor(Math.random() * tree.colors.length)]); // , tree.colors[Math.floor(Math.random() * tree.colors.length)]
   context.restore();
@@ -198,7 +197,11 @@ function colorOnOff() {
 
 const invert = () => {
   tree.inverted = !tree.inverted;
-  (tree.inverted) ? Array.from(document.getElementsByTagName('span')).forEach(function(cur,ind,arr){cur.style.color='white'}) : Array.from(document.getElementsByTagName('span')).forEach(function(cur,ind,arr){cur.style.color='black'});
+  if (tree.inverted) {
+    Array.from(document.getElementsByTagName('span')).forEach(function(cur,ind,arr){cur.style.color='white'});
+  } else {
+    Array.from(document.getElementsByTagName('span')).forEach(function(cur,ind,arr){cur.style.color='black'});
+  }
   regrowth();
 };
 
@@ -216,3 +219,9 @@ function screen() {
 }
 
 screen();
+
+const controls = document.getElementById('controls-fixed-bottom');
+const controlsContainer = document.getElementById('outer-controls-container');
+//controlsContainer.addEventListener('mouseenter', () => controls.style.opacity = 1);
+//controlsContainer.addEventListener('mouseleave', () => controls.style.opacity = 0.5);
+
