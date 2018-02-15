@@ -71,7 +71,7 @@ async function grow(growths, x, y, len, w, a) {
 // resets canvas, tree object, and invokes growth
 async function regrowth() {
   tree.seed = true;
-  (tree.inverted) ? context.fillRect(0,0,canvas.width,canvas.height) : context.clearRect(0,0,canvas.width,canvas.height);
+  context.clearRect(0,0,canvas.width,canvas.height);
   context.save();
   (tree.asynch) ? await grow(0, canvas.width/2, tree.seedHeight, tree.length, tree.width, tree.angle) : grow(0, canvas.width/2, tree.seedHeight, tree.length, tree.width, tree.angle); //, tree.colors[Math.floor(Math.random() * tree.colors.length)]); // , tree.colors[Math.floor(Math.random() * tree.colors.length)]
   context.restore();
@@ -103,7 +103,8 @@ function resetBranches() {
 const angleSlide = document.getElementById('angleSlider');
 const angleValue = document.getElementById('angle-value');
 function adjustAngle(newAng) {
-  angleValue.innerHTML = tree.angle = parseInt(newAng);
+  tree.angle = parseInt(newAng);
+  angleValue.innerHTML = newAng + "&deg;";
   regrowth();
 }
 function resetAngle() {
@@ -117,7 +118,7 @@ const angleOffsetSlide = document.getElementById('angleOffsetSlider');
 const angleOffsetValue = document.getElementById('angle-offset-value');
 function adjustAngleOffset(newAngOff) {
   tree.angleOffset = parseFloat(newAngOff).toFixed(1);
-  angleOffsetValue.innerHTML = ((parseFloat(newAngOff) - 1) * 100 ).toFixed(0)  + '%';
+  angleOffsetValue.innerHTML = ((parseFloat(newAngOff) - 1) * 100 ).toFixed(0)  + '&deg;';
   regrowth();
 }
 function resetAngleOffset() {
@@ -171,7 +172,10 @@ function resetCurve() {
 
 const asyncDelaySlide = document.getElementById('asyncSlider');
 const asyncDelayValue = document.getElementById('async-value');
-const adjustAsyncDelay = (newAsync) =>  asyncDelayValue.innerHTML = tree.asynchDelay = parseFloat(newAsync);
+function adjustAsyncDelay(newAsync) {
+  tree.asynchDelay = parseFloat(newAsync);
+  asyncDelayValue.innerHTML = newAsync + "ms";
+}
 const resetAsyncDelay = () => (tree.returnToDefault) ? tree.asynchDelay = asyncDelayValue.innerHTML = asyncDelaySlide.value = 5 : null;
 
 document.addEventListener("keydown", keyPushed);
@@ -198,16 +202,15 @@ function colorOnOff() {
 const invert = () => {
   tree.inverted = !tree.inverted;
   if (tree.inverted) {
-    Array.from(document.getElementsByTagName('span')).forEach(function(cur,ind,arr){cur.style.color='white'});
+    Array.from(document.getElementsByTagName('span')).forEach(function(cur,ind,arr){cur.style.color='#EEE'});
+    document.body.style.backgroundColor = 'black';
   } else {
     Array.from(document.getElementsByTagName('span')).forEach(function(cur,ind,arr){cur.style.color='black'});
+    document.body.style.backgroundColor = 'white';
   }
   regrowth();
 };
 
-
-context.fillStyle = 'white';
-context.fillRect(0,0,canvas.width,canvas.height);
 setColorStack();
 
 window.addEventListener('resize', screen);
