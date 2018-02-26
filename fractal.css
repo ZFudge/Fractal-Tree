@@ -2,14 +2,13 @@ html, body, div, canvas {
     margin: 0;
     padding: 0;
 }
-
-#nav-placeholder object {
+#nav-placeholder {
+  position: absolute;
   width: 100%;
 }
-#nav-placeholder {
+#nav-placeholder object {
   width: 100%;
-  align-self: flex-end;
-  position: absolute;
+  max-width: 800px;
 }
 
 body {
